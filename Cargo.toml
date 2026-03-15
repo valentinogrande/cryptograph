@@ -1,0 +1,9 @@
+[package]
+name = "cryptograph"
+version = "0.1.0"
+edition = "2024"
+description = "All you need for encrypthing your messages."
+license = "MIT"
+documentation = "https://docs.rs/cryptograph"
+
+[dependencies]
