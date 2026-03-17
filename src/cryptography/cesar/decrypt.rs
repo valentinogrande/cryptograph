@@ -8,7 +8,7 @@
 /// # Examples
 ///
 /// ```
-/// use cryptograph::cesar_decrypt;
+/// use cryptograph::cryptography::cesar::decrypt::cesar_decrypt;
 ///
 /// let result = cesar_decrypt("khoor", 3).unwrap();
 /// assert_eq!(result, "hello");

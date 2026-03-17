@@ -8,7 +8,7 @@
 /// # Examples
 ///
 /// ```
-/// use cryptograph::cesar_encrypt;
+/// use cryptograph::cryptography::cesar::encrypt::cesar_encrypt;
 ///
 /// let result = cesar_encrypt("hello", 3).unwrap();
 /// assert_eq!(result, "khoor");
@@ -17,6 +17,7 @@
 /// # Errors
 ///
 /// Returns `Err` if the resulting bytes are not valid UTF-8.
+///
 pub fn cesar_encrypt(msg: &str, shift: u8) -> Result<String, std::string::FromUtf8Error> {
     let encrypted_msg: Vec<u8> = {
         let mut enc = vec![];
