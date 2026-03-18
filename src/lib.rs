@@ -1,3 +1,4 @@
+pub mod bits;
 pub mod cryptoanalysis;
 pub mod cryptography;
 pub mod math;
