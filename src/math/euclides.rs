@@ -1,3 +1,7 @@
+use std::ops::{Div, Mul, Rem, Sub};
+
+use num_traits::Zero;
+
 /// Computes the greatest common divisor (GCD) of `a` and `b`
 /// using the Euclidean algorithm.
 ///
@@ -11,6 +15,15 @@
 /// assert_eq!(gcd(48, 18), 6);
 /// assert_eq!(gcd(17, 43), 1);
 /// ```
-pub fn gcd(a: i32, b: i32) -> i32 {
-    if a % b != 0 { gcd(b, a % b) } else { b }
+pub fn gcd<T>(a: T, b: T) -> T
+where
+    T: Copy
+        + PartialEq
+        + Zero
+        + Div<Output = T>
+        + Mul<Output = T>
+        + Rem<Output = T>
+        + Sub<Output = T>,
+{
+    if a % b != T::zero() { gcd(b, a % b) } else { b }
 }

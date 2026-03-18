@@ -7,3 +7,4 @@ license = "MIT"
 documentation = "https://docs.rs/cryptograph"
 
 [dependencies]
+num-traits = "0.2.19"
