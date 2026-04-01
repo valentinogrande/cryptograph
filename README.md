@@ -120,6 +120,8 @@ let inv = multiplicative_inverse(5, 7).unwrap();
 assert_eq!((5 * inv) % 7, 1);
 ```
 
+### LFSR
+
 ```rust
 // Create a 4-bit LFSR
 let ff = vec![
