@@ -12,6 +12,7 @@ It includes:
 
 * Classical ciphers (Caesar, Affine)
 * Stream cipher primitives
+* Pseudorandom bit generators (FlipFlop & LFSR)
 * Bit-level utilities
 * Number theory algorithms (Euclidean algorithm, Bézout, modular inverse)
 
@@ -35,6 +36,11 @@ It includes:
 
 * `bytes ↔ bits` conversion
 * Bitwise operations utilities
+
+### 🔄 Pseudorandom Generators
+
+* **FlipFlop**: a single 1-bit memory cell that can be toggled or set
+* **Lsfr**: Linear Feedback Shift Register, classical pseudorandom bit generator
 
 ---
 
@@ -114,6 +120,29 @@ let inv = multiplicative_inverse(5, 7).unwrap();
 assert_eq!((5 * inv) % 7, 1);
 ```
 
+```rust
+// Create a 4-bit LFSR
+let ff = vec![
+    FlipFlop::new(true),
+    FlipFlop::new(false),
+    FlipFlop::new(true),
+    FlipFlop::new(false),
+];
+
+// Initialize the LFSR
+let mut lfsr = Lsfr::new(ff);
+
+// Rotate the LFSR (advance one step)
+lfsr.rotate();
+
+// Get the current state of the flip-flops
+let state = lfsr.get();
+
+// Calculate the total number of possible LFSR states
+let possibilities = lfsr.calculate_possibilities();
+println!("Possible states: {}", possibilities);
+```
+
 ---
 
 ## ⚠️ Security Notice
@@ -154,8 +183,11 @@ cryptograph/
 │   ├── bezout/
 │   └── multiplicative_inverse/
 │
-└── utils/
-    └── bits/
+├── tools/
+│   └── flip_flop.rs
+│
+└── pseudorandom_generator/
+    └── lfsr.rs
 ```
 
 ---
