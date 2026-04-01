@@ -2,6 +2,8 @@ pub mod bits;
 pub mod cryptoanalysis;
 pub mod cryptography;
 pub mod math;
+pub mod pseudorandom_generator;
+pub mod tools;
 
 #[cfg(test)]
 mod tests {
