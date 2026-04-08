@@ -79,4 +79,19 @@ impl FlipFlop {
     pub fn put(&mut self, f: bool) {
         self.flag = f;
     }
+
+    /// Sets the flip-flop to a specific boolean value and returns itself.
+    ///
+    /// # Example
+    /// ```
+    ///use cryptograph::tools::flip_flop::FlipFlop;
+    ///
+    /// let mut ff = FlipFlop::new(false);
+    /// let f = ff.set(true);
+    /// assert_eq!(f.get(), true);
+    /// ```
+    pub fn set(&mut self, f: bool) -> &mut Self {
+        self.flag = f;
+        self
+    }
 }
