@@ -4,7 +4,7 @@ use crate::tools::flip_flop::FlipFlop;
 ///
 /// LFSR produces a sequence of pseudorandom bits using a vector of flip-flops
 /// and a feedback function that defines which bits are XORed to produce the next state.
-pub struct Lsfr<F: Fn(&[FlipFlop]) -> bool> {
+pub struct Lfsr<F: Fn(&[FlipFlop]) -> bool> {
     /// The vector of flip-flops representing the current state.
     pub ff: Vec<FlipFlop>,
 
@@ -12,7 +12,7 @@ pub struct Lsfr<F: Fn(&[FlipFlop]) -> bool> {
     pub fb: F,
 }
 
-impl<F> Lsfr<F>
+impl<F> Lfsr<F>
 where
     F: Fn(&[FlipFlop]) -> bool,
 {
@@ -23,14 +23,14 @@ where
     /// # Example
     /// ```
     /// use cryptograph::tools::flip_flop::FlipFlop;
-    /// use cryptograph::pseudorandom_generator::lfsr::Lsfr;
+    /// use cryptograph::pseudorandom_generator::lfsr::Lfsr;
     ///
     /// let ff = vec![
     ///     FlipFlop::new(true),
     ///     FlipFlop::new(false),
     ///     FlipFlop::new(true),
     /// ];
-    /// let lfsr = Lsfr::new(ff,|ff| ff[0].get() ^ ff[ff.len() -1].get());
+    /// let lfsr = Lfsr::new(ff,|ff| ff[0].get() ^ ff[ff.len() -1].get());
     /// assert_eq!(lfsr.get().len(), 3);
     /// ```
     pub fn new(ff: Vec<FlipFlop>, rule: F) -> Self {
@@ -45,9 +45,9 @@ where
     /// # Example
     /// ```
     ///use cryptograph::tools::flip_flop::FlipFlop;
-    ///use cryptograph::pseudorandom_generator::lfsr::Lsfr;
+    ///use cryptograph::pseudorandom_generator::lfsr::Lfsr;
     ///
-    /// let mut lfsr = Lsfr::new(vec![
+    /// let mut lfsr = Lfsr::new(vec![
     ///     FlipFlop::new(true),
     ///     FlipFlop::new(false),
     ///     FlipFlop::new(true),
@@ -72,9 +72,9 @@ where
     /// # Example
     /// ```
     ///use cryptograph::tools::flip_flop::FlipFlop;
-    ///use cryptograph::pseudorandom_generator::lfsr::Lsfr;
+    ///use cryptograph::pseudorandom_generator::lfsr::Lfsr;
     ///
-    /// let lfsr = Lsfr::new(vec![
+    /// let lfsr = Lfsr::new(vec![
     ///     FlipFlop::new(true),
     ///     FlipFlop::new(false),
     /// ],
@@ -94,9 +94,9 @@ where
     /// # Example
     /// ```
     ///use cryptograph::tools::flip_flop::FlipFlop;
-    ///use cryptograph::pseudorandom_generator::lfsr::Lsfr;
+    ///use cryptograph::pseudorandom_generator::lfsr::Lfsr;
     ///
-    /// let lfsr = Lsfr::new(vec![
+    /// let lfsr = Lfsr::new(vec![
     ///     FlipFlop::new(true),
     ///     FlipFlop::new(false),
     ///     FlipFlop::new(true),

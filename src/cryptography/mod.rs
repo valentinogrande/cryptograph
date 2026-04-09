@@ -69,4 +69,5 @@
 //! - Some implementations may operate at the bit level (`bool`) for learning purposes.
 pub mod affine;
 pub mod cesar;
+pub mod des;
 pub mod streams_ciphers;

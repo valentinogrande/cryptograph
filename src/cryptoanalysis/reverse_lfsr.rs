@@ -1,4 +1,4 @@
-use crate::pseudorandom_generator::lfsr::Lsfr;
+use crate::pseudorandom_generator::lfsr::Lfsr;
 use crate::tools::flip_flop::FlipFlop;
 
 /// Reconstructs the original message from a sequence encrypted using an LFSR.
@@ -40,7 +40,7 @@ use crate::tools::flip_flop::FlipFlop;
 ///
 /// ```
 /// use cryptograph::tools::flip_flop::FlipFlop;
-/// use cryptograph::pseudorandom_generator::lfsr::Lsfr;
+/// use cryptograph::pseudorandom_generator::lfsr::Lfsr;
 /// use cryptograph::cryptoanalysis::reverse_lfsr::reverse_lfsr;
 ///
 /// let y = vec![
@@ -84,7 +84,7 @@ pub fn reverse_lfsr<R: Fn(&[FlipFlop]) -> bool>(
 
     let sn = Vec::from(&s[0..n]);
 
-    let mut lfsr = Lsfr::new(sn, rule);
+    let mut lfsr = Lfsr::new(sn, rule);
 
     let mut msg: F = Vec::new();
     for ys in y {
