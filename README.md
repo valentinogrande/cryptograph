@@ -1,20 +1,19 @@
 # 🔐 Cryptograph
 
-> Educational cryptography library in Rust
+> Educational cryptography library written in Rust
 
 ---
 
 ## 📦 Overview
 
-`cryptograph` is a Rust library that implements fundamental concepts from **cryptography** and **number theory**, with a focus on clarity, learning, and low-level understanding.
+`cryptograph` is a Rust library that implements fundamental concepts from **cryptography**, **bit manipulation**, and **number theory**, with a focus on **clarity**, **learning**, and **low-level understanding**.
 
-It includes:
+This crate is designed for:
 
-* Classical ciphers (Caesar, Affine)
-* Stream cipher primitives
-* Pseudorandom bit generators (FlipFlop & LFSR)
-* Bit-level utilities
-* Number theory algorithms (Euclidean algorithm, Bézout, modular inverse)
+- Learning cryptography
+- Understanding cipher construction
+- Practicing bitwise programming in Rust
+- Exploring pseudorandom generators
 
 ---
 
@@ -22,25 +21,26 @@ It includes:
 
 ### 🔑 Cryptography
 
-* **Caesar Cipher**
-* **Affine Cipher**
-* **Stream Cipher (XOR-based)**
-
-### 🧠 Mathematics
-
-* Euclidean Algorithm (GCD)
-* Extended Euclidean Algorithm (Bézout)
-* Modular Multiplicative Inverse
-
-### ⚙️ Bit Manipulation
-
-* `bytes ↔ bits` conversion
-* Bitwise operations utilities
+- Caesar Cipher
+- Affine Cipher
+- Stream Cipher (XOR-based)
+- DES (Data Encryption Standard)
 
 ### 🔄 Pseudorandom Generators
 
-* **FlipFlop**: a single 1-bit memory cell that can be toggled or set
-* **Lsfr**: Linear Feedback Shift Register, classical pseudorandom bit generator
+- **FlipFlop** — 1-bit memory cell
+- **LFSR** — Linear Feedback Shift Register
+
+### ⚙️ Bit Manipulation
+
+- `bytes ↔ bits` conversion
+- Bitwise utilities
+
+### 🧠 Mathematics
+
+- Euclidean Algorithm (GCD)
+- Extended Euclidean Algorithm (Bézout)
+- Modular Multiplicative Inverse
 
 ---
 
@@ -145,6 +145,18 @@ let possibilities = lfsr.calculate_possibilities();
 println!("Possible states: {}", possibilities);
 ```
 
+### DES (Data Encryption Standard)
+
+```rust
+let plaintext = 0x0123456789ABCDEF;
+let key = 0x133457799BBCDFF1;
+
+let des = Des::new(plaintext);
+let encrypted = des.encrypt(key);
+
+println!("{:016X}", encrypted);
+```
+
 ---
 
 ## ⚠️ Security Notice
@@ -172,12 +184,12 @@ For real-world use, consider libraries like:
 ---
 
 ## 📁 Project Structure
-
 ```
 cryptograph/
 ├── cryptography/
 │   ├── cesar/
 │   ├── affine/
+│   ├── des/
 │   └── streams_ciphers/
 │
 ├── math/
@@ -191,16 +203,6 @@ cryptograph/
 └── pseudorandom_generator/
     └── lfsr.rs
 ```
-
----
-
-## 🛠 Future Improvements
-
-* Replace `Vec<bool>` with bit-packed representations
-* Add more secure stream cipher implementations
-* Improve UTF-8 handling
-* Add benchmarks and optimizations
-
 ---
 
 ## 🤝 Contributing
@@ -228,6 +230,7 @@ This project is built to deeply understand:
 * Bitwise operations
 * Modular arithmetic
 * Cipher design
+* pseudorandom number generator
 
 If you're learning cryptography or low-level Rust, this crate is for you.
 
