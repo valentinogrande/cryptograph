@@ -21,7 +21,7 @@
 use crate::cryptography::des::{
     f::f,
     key::{key_shift, permutated_choice_1, permutated_choice_2},
-    permutation::initial_permutation,
+    permutation::{final_permutation, initial_permutation},
 };
 
 const ROUNDS: u8 = 16;
@@ -118,8 +118,8 @@ impl Des {
         let mut left_key = (pc >> 28) as u32;
         let mut right_key = (pc & 0x0FFFFFFF) as u32;
 
-        let mut left_x = permuted as u32;
-        let mut right_x = (permuted >> 32) as u32;
+        let mut left_x = (permuted >> 32) as u32;
+        let mut right_x = permuted as u32;
 
         let (left, right) = round(
             &mut 0,
@@ -130,10 +130,10 @@ impl Des {
         );
 
         let mut encrypted: u64 = 0;
-        encrypted |= right as u64;
-        encrypted |= (left as u64) << 32;
+        encrypted |= left as u64;
+        encrypted |= (right as u64) << 32;
 
-        encrypted
+        final_permutation(encrypted)
     }
 }
 
@@ -187,10 +187,10 @@ pub fn round(
     (*left_key, *right_key) = key_shift(*left_key, *right_key, *n);
 
     let key = permutated_choice_2(*left_key, *right_key);
-    let temp = *left_x;
+    let temp = *right_x;
 
-    *left_x ^= f(*right_x, key);
-    *right_x = temp;
+    *right_x = *left_x ^ f(*right_x, key);
+    *left_x = temp;
 
     round(n, left_key, right_key, left_x, right_x)
 }

@@ -23,7 +23,7 @@
 //!
 //! - [`encrypt`] - Applies XOR between plaintext and keystream to produce ciphertext.
 //! - [`decrypt`] - Recovers plaintext using the same keystream (XOR is symmetric).
-//! - [`generete_seed`] - Generates the initial seed used to derive the keystream.
+//! - [`generate_seed`] - Generates the initial seed used to derive the keystream.
 //!
 //! # Properties
 //!
@@ -52,4 +52,4 @@
 //! - [`crate::math`] for number theory utilities used in key generation.
 pub mod decrypt;
 pub mod encrypt;
-pub mod generete_seed;
+pub mod generate_seed;

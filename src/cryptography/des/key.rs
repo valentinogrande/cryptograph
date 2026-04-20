@@ -129,3 +129,109 @@ pub fn key_shift(left_key: u32, right_key: u32, n: u8) -> (u32, u32) {
         (lk, rk)
     }
 }
+
+/// Performs the inverse key rotation used during DES decryption.
+///
+/// # Description
+///
+/// This function applies the **inverse key schedule rotation** for the
+/// Data Encryption Standard (DES). During DES encryption, the key halves
+/// are rotated **left** according to a predefined shift schedule.
+/// This function performs the **inverse operation** by rotating the key
+/// halves **right**, allowing generation of subkeys in reverse order
+/// for decryption.
+///
+/// DES splits the key into two 28-bit halves:
+///
+/// ```text
+/// C_i | D_i
+/// ```
+///
+/// During encryption:
+///
+/// ```text
+/// C_i = left_rotate(C_{i-1})
+/// D_i = left_rotate(D_{i-1})
+/// ```
+///
+/// During decryption (this function):
+///
+/// ```text
+/// C_{i-1} = right_rotate(C_i)
+/// D_{i-1} = right_rotate(D_i)
+/// ```
+///
+/// # Shift Schedule
+///
+/// DES uses the following rotation schedule:
+///
+/// | Round | Shift |
+/// |-------|-------|
+/// | 1     | 1     |
+/// | 2     | 1     |
+/// | 3–8   | 2     |
+/// | 9     | 1     |
+/// | 10–15 | 2     |
+/// | 16    | 1     |
+///
+/// This function applies the **inverse** of that schedule.
+///
+/// # Arguments
+///
+/// * `left_key`  - Left 28-bit key half (C_i)
+/// * `right_key` - Right 28-bit key half (D_i)
+/// * `n`         - Current round number (1..=16)
+///
+/// # Returns
+///
+/// Returns a tuple containing:
+///
+/// ```text
+/// (C_{i-1}, D_{i-1})
+/// ```
+///
+/// # Implementation Details
+///
+/// - Uses 28-bit circular rotations
+/// - Applies mask `0x0FFFFFFF` to maintain 28-bit width
+/// - Uses bitwise operations for maximum performance
+///
+/// # Example
+///
+/// ```rust
+/// use cryptograph::cryptography::des::key::inverse_key_shift;
+/// let left = 0b1010101010101010101010101010;
+/// let right = 0b0101010101010101010101010101;
+///
+/// let (l, r) = inverse_key_shift(left, right, 1);
+/// ```
+///
+/// # Performance
+///
+/// This implementation:
+///
+/// - Uses only register operations
+/// - Avoids allocations
+/// - Runs in constant time
+///
+/// # Security Notes
+///
+/// This function is part of DES, which is considered insecure for
+/// modern cryptographic use. Intended for educational or legacy purposes.
+///
+/// # References
+///
+/// - FIPS 46-3 (Data Encryption Standard)
+/// - NIST DES Specification
+/// - Feistel Network Key Scheduling
+pub fn inverse_key_shift(left_key: u32, right_key: u32, n: u8) -> (u32, u32) {
+    if ONE_SHIFT_ROUNDS.contains(&n) {
+        let lk = ((left_key >> 1) | ((left_key & 1) << 27)) & 0x0FFFFFFF;
+        let rk = ((right_key >> 1) | ((right_key & 1) << 27)) & 0x0FFFFFFF;
+        (lk, rk)
+    } else {
+        let lk = ((left_key >> 2) | ((left_key & 0b11) << 26)) & 0x0FFFFFFF;
+        let rk = ((right_key >> 2) | ((right_key & 0b11) << 26)) & 0x0FFFFFFF;
+        (lk, rk)
+    }
+}

@@ -69,7 +69,7 @@
 //!
 //! # Modules
 //!
-//! - [`cesar`] — Caesar cipher implementation
+//! - [`caesar`] — Caesar cipher implementation
 //! - [`affine`] — Affine cipher
 //! - [`des`] — Data Encryption Standard implementation
 //! - [`streams_ciphers`] — Stream cipher utilities
@@ -86,6 +86,8 @@
 //! These implementations prioritize understanding over performance
 //! and security.
 pub mod affine;
+pub mod caesar;
+#[doc(hidden)]
 pub mod cesar;
 pub mod des;
 pub mod streams_ciphers;
