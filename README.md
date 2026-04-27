@@ -8,10 +8,12 @@ readable implementations.
 ## Current status
 
 - Learning-focused, not production security-focused.
-- Includes classical ciphers (Caesar, Affine), XOR stream cipher helpers,
-  LFSR utilities, and DES components.
-- `DES` is partial: `Des::encrypt` exists, but `Des::decrypt` is currently
-  a placeholder (returns `7`).
+- Includes AES, DES, classical ciphers (Caesar, Affine), XOR stream cipher
+  helpers, and LFSR utilities.
+- `AES` supports single-block AES-128, AES-192, and AES-256 encryption and
+  decryption, plus educational helpers for `SubBytes`, `ShiftRows`,
+  `MixColumns`, and key expansion.
+- `DES` includes both single-block encryption and decryption.
 - Backward-compatible aliases are still available for older names such as
   `cryptography::cesar` and `streams_ciphers::generete_seed`.
 
@@ -42,6 +44,14 @@ cryptograph/
     │   └── reverse_lfsr.rs
     ├── cryptography/
     │   ├── mod.rs
+    │   ├── aes/
+    │   │   ├── mod.rs
+    │   │   ├── bite_sub.rs
+    │   │   ├── decrypt.rs
+    │   │   ├── encrypt.rs
+    │   │   ├── key.rs
+    │   │   ├── mix_column.rs
+    │   │   └── shift_rows.rs
     │   ├── affine/
     │   │   ├── mod.rs
     │   │   ├── encrypt.rs
@@ -108,6 +118,37 @@ cryptograph/
   - `get(&self) -> &[FlipFlop]`
   - `calculate_possibilities(&self) -> usize`
 
+### `cryptography::aes`
+
+- Re-exported types:
+  - `Aes`
+    - `new(security: AesEncryptionType, x: u128) -> Self`
+    - `encrypt(&self) -> u128`
+    - `decrypt(y: u128, security: AesEncryptionType) -> u128`
+  - `AesEncryptionType`
+    - `Low(u128)` for AES-128
+    - `Medium(U192)` for AES-192
+    - `High(U256)` for AES-256
+    - `bit_len(self) -> usize`
+  - `U192`
+    - `new(data: [u64; 3]) -> Self`
+    - `from_be_bytes(bytes: [u8; 24]) -> Self`
+    - `to_be_bytes(self) -> [u8; 24]`
+  - `U256`
+    - `new(data: [u64; 4]) -> Self`
+    - `from_be_bytes(bytes: [u8; 32]) -> Self`
+    - `to_be_bytes(self) -> [u8; 32]`
+- Public helpers:
+  - `bite_sub::SBOX`
+  - `bite_sub::generate_inverse_table() -> [[u8; 16]; 16]`
+  - `bite_sub::generate_affine_mapping_table() -> [u8; 8]`
+  - `bite_sub::affine_mapping(...) -> [[u8; 16]; 16]`
+  - `key::expand_key(security: AesEncryptionType) -> Vec<u128>`
+  - `shift_rows::shift_rows(x: u128) -> u128`
+  - `shift_rows::inverse_shift_rows(x: u128) -> u128`
+  - `mix_column::mix_column(x: u128) -> u128`
+  - `mix_column::inverse_mix_column(x: u128) -> u128`
+
 ### `cryptography::caesar`
 
 - `encrypt::caesar_encrypt(msg: &str, shift: u8) -> Result<String, FromUtf8Error>`
@@ -130,7 +171,7 @@ cryptograph/
 - `encrypt::Des`
   - `new(x: u64) -> Self`
   - `encrypt(&self, key: u64) -> u64`
-  - `decrypt(y: u64) -> u64` (current placeholder)
+  - `decrypt(y: u64, key: u64) -> u64`
 - Public internal helpers:
   - `encrypt::round(...) -> (u32, u32)`
   - `e_box::e_box(bits: u32) -> u64`
@@ -173,6 +214,21 @@ use cryptograph::math::{
 assert_eq!(gcd(78, 30), 6);
 assert_eq!(bezout(78, 30), (2, -5));
 assert_eq!(multiplicative_inverse(3, 7), Some(5));
+```
+
+### AES block encryption and decryption
+
+```rust
+use cryptograph::cryptography::aes::{Aes, AesEncryptionType};
+
+let key = AesEncryptionType::Low(0x000102030405060708090A0B0C0D0E0F);
+let plaintext = 0x00112233445566778899AABBCCDDEEFF;
+
+let ciphertext = Aes::new(key, plaintext).encrypt();
+let recovered = Aes::decrypt(ciphertext, key);
+
+assert_eq!(ciphertext, 0x69C4E0D86A7B0430D8CDB78070B4C55A);
+assert_eq!(recovered, plaintext);
 ```
 
 ### Caesar cipher
@@ -290,7 +346,7 @@ println!("{encrypted:016X}");
 - `stream_cipher_crypt` and `fut_stream_cipher_encrypt` use `assert_eq!`
   to enforce matching message/seed length.
 - `reverse_lfsr` returns an error if `x.len() < n`.
-- `Des::decrypt` is not implemented yet.
+- AES and DES operate on a single block only; block modes and padding are not included.
 
 ## Security
 

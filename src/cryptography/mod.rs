@@ -7,6 +7,7 @@
 //!
 //! This module includes:
 //!
+//! - **AES** - Modern block cipher operating on 128-bit blocks
 //! - **Caesar Cipher** — Simple shift-based substitution cipher
 //! - **Affine Cipher** — Linear transformation using modular arithmetic
 //! - **DES** — Block cipher based on the Feistel network
@@ -69,6 +70,7 @@
 //!
 //! # Modules
 //!
+//! - [`aes`] — Advanced Encryption Standard helpers and block operations
 //! - [`caesar`] — Caesar cipher implementation
 //! - [`affine`] — Affine cipher
 //! - [`des`] — Data Encryption Standard implementation
@@ -85,6 +87,7 @@
 //!
 //! These implementations prioritize understanding over performance
 //! and security.
+pub mod aes;
 pub mod affine;
 pub mod caesar;
 #[doc(hidden)]

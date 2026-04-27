@@ -1,6 +1,6 @@
 [package]
 name = "cryptograph"
-version = "0.1.12"
+version = "0.1.13"
 edition = "2024"
 description = "All you need for encrypthing your messages."
 license = "MIT"
@@ -8,9 +8,10 @@ documentation = "https://docs.rs/cryptograph"
 
 [dependencies]
 num-traits = "0.2.19"
-rand = "0.10.0"
-rand_core = "0.10.0"
+rand = "0.10.1"
+rand_core = "0.10.1"
 futures = "0.3.32"
+gf256 = "0.3.1"
 
 [dev-dependencies]
 tokio-test = "0.4.5"
